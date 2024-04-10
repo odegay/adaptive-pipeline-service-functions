@@ -1,0 +1,17 @@
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: ['-c', 'gcloud secrets versions access latest --secret="gcp_pypi_publish_token" > /workspace/gcp_pypi_publish_token']
+- name: 'python:3.9'  # Specify Python version for consistency
+  entrypoint: 'bash'
+  args: 
+     - '-c'
+     - |
+       set -e  # Ensure the script exits on the first error
+       pip install build==0.7.0 twine==3.4.2
+       pip install -r requirements.txt
+       python setup.py sdist bdist_wheel
+       export TWINE_PASSWORD=$(cat /workspace/gcp_pypi_publish_token)
+       twine upload dist/* --verbose
+  env:       
+     - 'TWINE_USERNAME=__token__'
