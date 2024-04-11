@@ -4,6 +4,7 @@ import requests
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)  # Capture DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 def publish_to_pubsub(topic_name : str, data : dict) -> bool:
     """Publishes a message to a Google Cloud Pub/Sub topic."""
