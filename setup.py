@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="adpipsvcfuncs",
-    version="0.1.4",
+    version="0.1.5",
     packages=find_packages(),
     install_requires=[],
     author="Oleg D",
@@ -10,5 +10,8 @@ setup(
     description="Service functions for the Adaptive Pipeline Workflow project.",
     license="MIT",
     keywords="GenAI, GCP",
-    url="https://github.com/odegay/adaptive-pipeline-service-functions",            
+    url="https://github.com/odegay/adaptive-pipeline-service-functions",
+    install_requires=[
+        'google-secret-manager', 'google-cloud-pubsub', 'requests'
+    ]
 )
