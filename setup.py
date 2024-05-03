@@ -3,8 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="adpipsvcfuncs",
     version="0.1.5",
-    packages=find_packages(),
-    install_requires=[],
+    packages=find_packages(),    
     author="Oleg D",
     author_email="olegd@gmail.com",
     description="Service functions for the Adaptive Pipeline Workflow project.",
