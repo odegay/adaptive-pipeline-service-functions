@@ -2,6 +2,7 @@ import json
 from google.cloud import pubsub_v1, secretmanager
 import requests
 import logging
+from openai import OpenAI
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)  # Capture DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -41,3 +42,20 @@ def publish_to_pubsub(topic_name : str, data : dict) -> bool:
     except Exception as e:
         logger.error(f"Failed to publish message: {str(e)}")
         return False
+    
+def openAI_request(api_key: str, role: str, request: str) -> dict:
+    client = OpenAI(api_key=api_key)
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-4-turbo",
+            messages=[
+                {"role": "system", "content": role},
+                {"role": "user", "content": request},
+            ])
+    except Exception as e:
+        logger.error(f"Failed to get completion from OpenAI: {str(e)}")
+        return None
+    return completion
+
+
+    
