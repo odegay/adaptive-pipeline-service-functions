@@ -57,5 +57,11 @@ def openAI_request(api_key: str, role: str, request: str) -> dict:
         return None
     return completion
 
-
+def load_valid_json(string) -> dict:
+    try:
+        loaded_json = json.loads(string)
+        return loaded_json
+    except Exception as e:
+        logger.error(f"JSON validation failed: {str(e)}, string: {string}")
+        return None
     
