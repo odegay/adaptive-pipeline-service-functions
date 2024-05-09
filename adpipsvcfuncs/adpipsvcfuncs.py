@@ -65,3 +65,24 @@ def load_valid_json(string) -> dict:
         logger.error(f"JSON validation failed: {str(e)}, string: {string}")
         return None
     
+def load_current_pipeline_data(pipeline_id: str):
+    api_url = fetch_gcp_secret('adaptive-pipeline-persistence-layer-url')
+    api_key = fetch_gcp_secret('adaptive-pipeline-API-token')
+
+    if not api_url:
+        logger.error("Failed to fetch the API URL")
+        return None
+    headers = {
+            "Authorization": api_key
+        }
+    try:
+        response = requests.get(f"{api_url}/read/{pipeline_id}", headers=headers)
+        if response.status_code != 200:
+            logger.error(f"Failed to fetch the pipeline data. Response: {response.text}")
+            return None
+        pipeline_data = response.json()
+        return pipeline_data
+    except Exception as e:
+        logger.error(f"Error: {str(e)}")
+        return None       
+    

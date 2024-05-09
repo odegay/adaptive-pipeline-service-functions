@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="adpipsvcfuncs",
-    version="0.1.8",
+    version="0.1.9",
     packages=find_packages(),    
     author="Oleg D",
     author_email="olegd@gmail.com",
