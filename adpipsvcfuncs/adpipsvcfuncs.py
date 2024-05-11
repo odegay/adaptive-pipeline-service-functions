@@ -84,5 +84,23 @@ def load_current_pipeline_data(pipeline_id: str):
         return pipeline_data
     except Exception as e:
         logger.error(f"Error: {str(e)}")
-        return None       
+        return None   
+
+def save_current_pipeline_data(pipeline_data: dict) -> bool:
+    api_url = fetch_gcp_secret('adaptive-pipeline-persistence-layer-url')
+    api_key = fetch_gcp_secret('adaptive-pipeline-API-token')
+    if not api_url:
+        logger.error("Failed to fetch the API URL")
+        return None
+    headers = {
+            "Authorization": api_key
+        }
+    try:
+        response = requests.put(f"{api_url}/update/{pipeline_data['pipeline_id']}", json=pipeline_data, headers=headers)
+        if response.status_code != 200:
+            logger.error(f"Failed to update the pipeline status. Response: {response.text}")
+            return False
+    except Exception as e:
+        logger.error(f"Error: {str(e)}")
+        return False
     
