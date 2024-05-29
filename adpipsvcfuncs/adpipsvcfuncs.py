@@ -7,11 +7,15 @@ from openai import OpenAI
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)  # Capture DEBUG, INFO, WARNING, ERROR, CRITICAL
 
-def fetch_gcp_secret(secret_name: str) -> str:
-    # Fetch Project ID from Metadata Server
+def fetch_gcp_project_id() -> str:
     metadata_server_url = "http://metadata/computeMetadata/v1/project/project-id"
     headers = {"Metadata-Flavor": "Google"}
     project_id = requests.get(metadata_server_url, headers=headers).text
+    return project_id
+
+def fetch_gcp_secret(secret_name: str) -> str:
+    # Fetch Project ID from Metadata Server
+    project_id = fetch_gcp_project_id()
     
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
@@ -28,9 +32,7 @@ def fetch_gcp_secret(secret_name: str) -> str:
 def publish_to_pubsub(topic_name : str, data : dict) -> bool:
     """Publishes a message to a Google Cloud Pub/Sub topic."""
     # Fetch Project ID from Metadata Server
-    metadata_server_url = "http://metadata/computeMetadata/v1/project/project-id"
-    headers = {"Metadata-Flavor": "Google"}
-    project_id = requests.get(metadata_server_url, headers=headers).text
+    project_id = fetch_gcp_project_id()
     # Publish the message to Pub/Sub
     try:
         publisher = pubsub_v1.PublisherClient()
