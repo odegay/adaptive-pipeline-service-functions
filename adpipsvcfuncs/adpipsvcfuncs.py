@@ -1,3 +1,4 @@
+import base64
 import json
 from google.cloud import pubsub_v1, secretmanager
 import requests
@@ -28,6 +29,20 @@ def fetch_gcp_secret(secret_name: str) -> str:
     response = client.access_secret_version(request={"name": name})
     secret_string = response.payload.data.decode("UTF-8")
     return secret_string
+
+# Get pipeline_id from the message
+def get_pipeline_id(event: dict) -> str:
+    if 'data' in event:
+        pubsub_message = base64.b64decode(event['data']).decode('utf-8')
+        pubsub_message = json.loads(pubsub_message)
+        if 'pipeline_id' in pubsub_message:
+            return pubsub_message['pipeline_id']
+        else:
+            logger.error("Pipeline ID is missing in the message")
+            return ""
+    else:
+        logger.error("Data is missing in the event")
+        return ""
 
 def publish_to_pubsub(topic_name : str, data : dict) -> bool:
     """Publishes a message to a Google Cloud Pub/Sub topic."""
