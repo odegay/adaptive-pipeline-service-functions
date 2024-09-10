@@ -54,6 +54,7 @@ def publish_to_pubsub(topic_name : str, data : dict) -> bool:
         topic_path = publisher.topic_path(project_id, topic_name)
         data = json.dumps(data).encode("utf-8")
         future = publisher.publish(topic_path, data)
+        logger.debug(f"Publishing completed with message ID: {future.result()}")
         logger.debug(f"Published message to topic: {topic_name} and project_id: {project_id}")
         return True
     except Exception as e:
