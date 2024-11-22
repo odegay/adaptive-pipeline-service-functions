@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="adpipsvcfuncs",
-    version="0.1.13",
+    version="0.1.14",
     packages=find_packages(),    
     author="Oleg D",
     author_email="olegd@gmail.com",
@@ -11,6 +11,6 @@ setup(
     keywords="GenAI, GCP",
     url="https://github.com/odegay/adaptive-pipeline-service-functions",
     install_requires=[
-        'google-cloud-secret-manager', 'google-cloud-pubsub', 'requests', 'openai==1.30.5'
+        'google-cloud-secret-manager', 'google-cloud-pubsub', 'requests', 'openai'
     ]
 )

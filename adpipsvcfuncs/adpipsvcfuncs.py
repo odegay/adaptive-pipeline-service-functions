@@ -65,7 +65,7 @@ def openAI_request(api_key: str, role: str, request: str) -> dict:
     client = OpenAI(api_key=api_key)
     try:
         completion = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": role},
                 {"role": "user", "content": request},
